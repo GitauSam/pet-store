@@ -19,8 +19,7 @@ class CreatePet(val petRepository: PetRepository) {
                                     ?.let {
                                         pet.colour
                                                 ?.let {
-                                                    val p = petRepository.save(pet)
-                                                    return p
+                                                    return petRepository.save(pet)
                                                 }?: run {
                                                     throw InvalidParameterException("Expected param colour of input pet is null")
                                                 }

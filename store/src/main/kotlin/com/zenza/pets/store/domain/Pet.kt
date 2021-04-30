@@ -10,4 +10,6 @@ data class Pet(
     var age: Double?
 ) {
     @Id var id: String? = null
+    var status: Int? = 1
+    var adopted: Int? = 0
 }
