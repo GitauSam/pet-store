@@ -28,6 +28,8 @@ class PetRepositoryTests {
     fun indexPets() {
         val pets = petRepository.findAll()
 
+        println(pets.size)
+
         for (p in pets) {
             println(p)
         }
