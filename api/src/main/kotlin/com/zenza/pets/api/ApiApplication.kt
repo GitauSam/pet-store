@@ -14,8 +14,6 @@ class ApiApplication: ApplicationRunner {
 
 	@Autowired
 	lateinit var userRepository: UserRepository
-	@Autowired
-	lateinit var passwordEncoder: PasswordEncoder
 
 	override fun run(args: ApplicationArguments?) {
 //		userRepository.save(User(
@@ -23,7 +21,7 @@ class ApiApplication: ApplicationRunner {
 //				"Doe",
 //				"johndoe@pets.com",
 //				"2547123456789",
-//				passwordEncoder.encode("JohnDoe1234")
+//				"JohnDoe1234"
 //		))
 	}
 }
