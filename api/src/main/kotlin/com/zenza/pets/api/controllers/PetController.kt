@@ -133,12 +133,12 @@ class PetController(
     }
 
     @GetMapping("/fetch")
-    fun fetchById(@RequestParam("pet") petId: String): ResponseEntity<ApiResponse> = try {
+    fun fetchById(@RequestParam("pet") petId: Long): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse(
                         "200",
                         "pet fetched successfully",
-                        fetchPet.byId(Pet(null, null, null).apply { id = petId })
+                        fetchPet.byId(Pet().apply { id = petId })
                 ))
     } catch (e: InvalidParameterException) {
         ResponseEntity.status(HttpStatus.BAD_REQUEST)

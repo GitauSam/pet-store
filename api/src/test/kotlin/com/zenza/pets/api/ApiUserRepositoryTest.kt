@@ -18,6 +18,7 @@ class ApiUserRepositoryTest {
 
         for (u in users) {
             println(u.email)
+            println(u.password)
         }
 
     }

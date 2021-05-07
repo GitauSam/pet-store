@@ -7,22 +7,24 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @SpringBootApplication(scanBasePackages = ["com.zenza.pets"])
 class ApiApplication: ApplicationRunner {
 
 	@Autowired
 	lateinit var userRepository: UserRepository
+	@Autowired
+	lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
 	override fun run(args: ApplicationArguments?) {
-//		userRepository.save(User(
-//				"John",
-//				"Doe",
-//				"johndoe@pets.com",
-//				"2547123456789",
-//				"JohnDoe1234"
-//		))
+//		userRepository.save(User().apply {
+//			firstName = "John"
+//			lastName = "Doe"
+//			email = "johndoe@pets.com"
+//			password = bCryptPasswordEncoder.encode("JohnDoe1234")
+//			phoneNumber = "254700000000"
+//		})
 	}
 }
 
