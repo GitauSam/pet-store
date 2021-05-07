@@ -15,11 +15,12 @@ class PetRepositoryTests {
 
     @Test
     fun savePet() {
-        val pet = petRepository.save(Pet(
-                type = "Cat",
-                colour = "Black & white",
+        val pet = petRepository.save(Pet().apply {
+                type = "Cat"
+                colour = "Black & white"
                 age = 0.5
-        ))
+            }
+        )
 
         println(pet)
     }

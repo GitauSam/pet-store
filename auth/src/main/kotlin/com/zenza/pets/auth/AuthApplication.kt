@@ -9,7 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @SpringBootApplication(scanBasePackages = ["com.zenza"])
-class AuthApplication
+class AuthApplication {
+	@Bean
+	fun bcryptPasswordEncoder(): BCryptPasswordEncoder {
+		return BCryptPasswordEncoder()
+	}
+}
 
 fun main(args: Array<String>) {
 	runApplication<AuthApplication>(*args)

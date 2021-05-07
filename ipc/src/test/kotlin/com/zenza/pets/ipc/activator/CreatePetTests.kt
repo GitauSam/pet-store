@@ -29,29 +29,29 @@ class CreatePetTests {
 
     @Test
     fun testForNullParameters() {
-        val pet = Pet(
-            type = null,
-            colour = "Black & white",
+        val pet = Pet().apply {
+            type = null
+            colour = "Black & white"
             age = 0.4
-        )
+        }
 
         Assertions.assertThrows(InvalidParameterException::class.java) { createPet.save(pet) }
     }
 
     @Test
     fun `should create pet by delegating to pet repository`() {
-        val pet = Pet(
-                type = "Turtle",
-                colour = "Black & white",
-                age = 0.4
-        )
-
-        val savedPet = Pet(
-                    type = "Turtle",
-                    colour = "Black & white",
+        val pet = Pet()
+                .apply {
+                    type = "Turtle"
+                    colour = "Black & white"
                     age = 0.4
-                ).apply {
-                    id = "persisted"
+        }
+
+        val savedPet = Pet().apply {
+                    id = 1
+                    type = "Turtle"
+                    colour = "Black & white"
+                    age = 0.4
                 }
 
         every { mockPetRepository.save(pet) } returns savedPet

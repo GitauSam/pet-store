@@ -36,12 +36,11 @@ internal class EditPetTest {
 
     @Test
     fun `should throw InvalidParameterException when passed argument with null params`() {
-        val savedPet = Pet(
-                type = "Horse",
-                colour = "Black & White",
-                age = null
-        ).apply {
-            id = "Test Id"
+        val savedPet = Pet().apply {
+            id = 1
+            type = "Horse"
+            colour = "Black & White"
+            age = null
         }
 
         assertThatExceptionOfType(InvalidParameterException::class.java)
@@ -53,12 +52,11 @@ internal class EditPetTest {
 
     @Test
     fun `should persist changes to pet entity by delegating to pet repository`() {
-        val savedPet = Pet(
-                type = "Horse",
-                colour = "Black & White",
-                age = 0.4
-        ).apply {
-            id = "Test Id"
+        val savedPet = Pet().apply {
+            id = 1
+            type = "Horse"
+            colour = "Black & White"
+            age = 0.4
         }
 
         every { petRepository.save(savedPet) } returns savedPet

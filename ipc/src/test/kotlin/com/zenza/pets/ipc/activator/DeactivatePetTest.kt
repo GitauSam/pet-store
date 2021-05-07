@@ -32,13 +32,12 @@ internal class DeactivatePetTest {
 
     @Test
     fun `should throw InvalidParameterException when input of passed argument is null`() {
-        val savedPet = Pet(
-                type = "Horse",
-                colour = "Black & White",
-                age = 0.4
-        ).apply {
+        val savedPet = Pet().apply {
             id = null
             status = 0
+            type = "Horse"
+            colour = "Black & White"
+            age = 0.4
         }
 
         Assertions.assertThatExceptionOfType(InvalidParameterException::class.java)
@@ -51,12 +50,13 @@ internal class DeactivatePetTest {
     @Test
     fun `should deactivate pet entity by delegating to pet repository`() {
         val savedPet = Pet(
-                type = "Horse",
-                colour = "Black & White",
-                age = 0.4
+
         ).apply {
-            id = "Test Id"
+            id = 1
             status = 0
+            type = "Horse"
+            colour = "Black & White"
+            age = 0.4
         }
 
         every { petRepository.save(savedPet) } returns savedPet

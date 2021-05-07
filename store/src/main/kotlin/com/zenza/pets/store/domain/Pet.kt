@@ -1,15 +1,17 @@
 package com.zenza.pets.store.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-@Document
-data class Pet(
-    var type: String?,
-    var colour: String?,
-    var age: Double?
-) {
-    @Id var id: String? = null
+@Entity
+class Pet {
+    @Id
+    @GeneratedValue
+    var id: Long? = null
+    var type: String? = null
+    var colour: String? = null
+    var age: Double? = null
     var status: Int? = 1
     var adopted: Int? = 0
 }

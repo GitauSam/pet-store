@@ -35,7 +35,7 @@ internal class FetchPetTest {
 
     @Test
     fun `should throw InvalidParameterException when input parameter is null`() {
-        val pet = Pet(null, null, null).apply { id = null }
+        val pet = Pet().apply { id = null }
         Assertions.assertThatExceptionOfType(InvalidParameterException::class.java)
                 .isThrownBy { fetchPet.byId(pet) }
                 .withMessage("%s", "Expected param id of input pet is null")
@@ -45,7 +45,9 @@ internal class FetchPetTest {
 
     @Test
     fun `should call findById function of pet repository`() {
-        val pet = Pet(null, null, null).apply { id = "test id" }
+        val pet = Pet().apply {
+            id = 1
+        }
 
         every { petRepository.findById(pet.id!!) } returns Optional.of(pet)
 
