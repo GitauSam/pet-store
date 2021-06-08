@@ -1,6 +1,7 @@
 package com.zenza.pets.api.controllers
 
 import com.zenza.pets.api.domain.ApiResponse
+import com.zenza.pets.api.domain.CreatePetRequest
 import com.zenza.pets.ipc.activator.CreatePet
 import com.zenza.pets.ipc.activator.DeactivatePet
 import com.zenza.pets.ipc.activator.EditPet
@@ -11,6 +12,9 @@ import com.zenza.pets.store.domain.Pet
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.util.logging.Level
+import java.util.logging.Logger
 
 @RestController()
 @RequestMapping("/pet")
@@ -21,15 +25,42 @@ class PetController(
         val fetchPet: FetchPet
 ) {
 
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/create")
-    fun create(@RequestBody pet: Pet): ResponseEntity<ApiResponse> = try {
+    fun create(
+            @RequestParam("type") t: String,
+            @RequestParam("age") a: Double,
+            @RequestParam("colour") c: String,
+            @RequestParam("file") file: MultipartFile
+    ): ResponseEntity<ApiResponse> = try {
+//        val pet = createPet.save(
+//                    file,
+//                    Pet().apply {
+//                        type = t
+//                        age = a
+//                        colour = c
+//                    }
+//        )
+
+        val pet = createPet.save(
+                file,
+                Pet().apply {
+                    type = t
+                    age = a
+                    colour = c
+                }
+        )
+
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "pet created successfully")
+
         ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse(
                         "200",
                         "pet saved successfully",
-                        createPet.save(pet)
+                        arrayOf(pet.id, pet.type, pet.age, pet.colour, pet.status)
                 ))
     } catch (e: InvalidParameterException) {
+        Logger.getLogger(this.javaClass.name).log(Level.SEVERE, "error occurred while creating pet ${e.message}")
         ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         ApiResponse(
@@ -39,6 +70,7 @@ class PetController(
                         )
                 )
     } catch (e: InvalidInputException) {
+        Logger.getLogger(this.javaClass.name).log(Level.SEVERE, "error occurred while creating pet ${e.message}")
         ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         ApiResponse(
@@ -48,6 +80,7 @@ class PetController(
                         )
                 )
     } catch (e: Exception) {
+        Logger.getLogger(this.javaClass.name).log(Level.SEVERE, "error occurred while creating pet ${e.message}")
         ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         ApiResponse(
@@ -170,12 +203,15 @@ class PetController(
     }
 
     @GetMapping("/fetch-all")
-    fun fetchAll(): ResponseEntity<ApiResponse> = try {
+    fun fetchAll(
+            @RequestParam("page", defaultValue = "0") page: Int,
+            @RequestParam("size", defaultValue = "5") size: Int
+    ): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse(
                         "200",
                         "pets fetched successfully",
-                        fetchPet.all()
+                        fetchPet.all(page, size)
                 ))
     } catch (e: Exception) {
         ResponseEntity.status(HttpStatus.BAD_REQUEST)

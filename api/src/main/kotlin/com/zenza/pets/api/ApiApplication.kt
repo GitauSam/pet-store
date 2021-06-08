@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @SpringBootApplication(scanBasePackages = ["com.zenza.pets"])
@@ -22,6 +24,7 @@ class ApiApplication: ApplicationRunner {
 //			firstName = "John"
 //			lastName = "Doe"
 //			email = "johndoe@pets.com"
+//			username = "johndoe"
 //			password = bCryptPasswordEncoder.encode("JohnDoe1234")
 //			phoneNumber = "254700000000"
 //		})

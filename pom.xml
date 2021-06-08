@@ -23,6 +23,7 @@
         <module>ipc</module>
         <module>api</module>
         <module>auth</module>
+        <module>config</module>
     </modules>
     <dependencies>
         <dependency>

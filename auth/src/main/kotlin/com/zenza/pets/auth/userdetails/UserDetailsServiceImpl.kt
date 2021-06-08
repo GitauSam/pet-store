@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component
 @Component
 class UserDetailsServiceImpl(private val userRepository: UserRepository): UserDetailsService {
 
-    override fun loadUserByUsername(email: String?): UserDetails {
+    override fun loadUserByUsername(username: String?): UserDetails {
 
-        val user = userRepository.findByEmail(email!!)
+        val user = userRepository.findByUsername(username!!)
 
         user?.let {
             return User(user.email, user.password, listOf<SimpleGrantedAuthority>())
         }?: run {
-            throw UsernameNotFoundException("Invalid user. Did not find user with email {$email}")
+            throw UsernameNotFoundException("Invalid user. Did not find user with username {$username}")
         }
 
     }

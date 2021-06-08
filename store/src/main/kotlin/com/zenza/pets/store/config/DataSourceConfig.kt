@@ -15,9 +15,9 @@ class DataSourceConfig {
     fun dataSource(): DataSource {
         return  DataSourceBuilder.create()
                     .driverClassName("org.postgresql.Driver")
-                    .url("jdbc:postgresql://localhost:5432/")
-                    .username("")
-                    .password("")
+                    .url("jdbc:postgresql://localhost:5432/pets")
+                    .username("phi")
+                    .password("phi2021")
                     .build()
     }
 

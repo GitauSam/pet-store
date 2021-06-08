@@ -11,13 +11,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.logging.Level
-import java.util.logging.Logger
 
 @RequestMapping("/auth")
 @RestController
@@ -32,14 +29,15 @@ class AuthController(
     fun login(@RequestBody user: User): ResponseEntity<ApiResponse> {
         try {
 
-            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.email, user.password))
+            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
 
-            val authenticatedUser = userRepository.findByEmail(user.email!!)
+            val authenticatedUser = userRepository.findByUsername(user.username!!)
 
             return ResponseEntity.ok()
                     .header(
                             HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateAccessToken(authenticatedUser!!)
+                            jwtTokenUtil.generateAccessToken(authenticatedUser!!),
+                            "token"
                     )
                     .body(ApiResponse(
                             "200",
