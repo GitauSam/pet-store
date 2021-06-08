@@ -6,7 +6,7 @@
 		<groupId>com.zenza</groupId>
 		<artifactId>pets</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../pets</relativePath>
+		<relativePath>../../pet-store</relativePath>
 	</parent>
 	<groupId>com.zenza.pets</groupId>
 	<artifactId>ipc</artifactId>

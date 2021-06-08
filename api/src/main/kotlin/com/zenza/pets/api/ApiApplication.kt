@@ -20,14 +20,18 @@ class ApiApplication: ApplicationRunner {
 	lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
 	override fun run(args: ApplicationArguments?) {
-//		userRepository.save(User().apply {
-//			firstName = "John"
-//			lastName = "Doe"
-//			email = "johndoe@pets.com"
-//			username = "johndoe"
-//			password = bCryptPasswordEncoder.encode("JohnDoe1234")
-//			phoneNumber = "254700000000"
-//		})
+		userRepository.findByUsername("johndoe")?.let {
+
+		}?: run {
+			userRepository.save(User().apply {
+				firstName = "John"
+				lastName = "Doe"
+				email = "johndoe@pets.com"
+				username = "johndoe"
+				password = bCryptPasswordEncoder.encode("JohnDoe1234")
+				phoneNumber = "254700000000"
+			})
+		}
 	}
 }
 
