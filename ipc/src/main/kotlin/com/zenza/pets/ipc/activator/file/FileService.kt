@@ -41,9 +41,9 @@ class FileService(
             val petImage = PetImageProperties()
             petImage.pet = pet
             petImage.documentFormat = file.contentType
-            petImage.fileName = "fileName"
+            petImage.fileName = file.originalFilename
             petImage.documentType = "Pet Image"
-            petImage.path = "path"
+            petImage.path = "petimg"
             petImagePropertiesRepository.save(petImage)
 
             return "1"

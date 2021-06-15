@@ -5,12 +5,13 @@ import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.User
 import com.zenza.pets.store.repository.UserRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class CreateUser(
        private val userRepository: UserRepository,
-//       private val bCryptPasswordEncoder: BCryptPasswordEncoder
+       private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
     fun save(user: User?): User? {
@@ -30,8 +31,7 @@ class CreateUser(
                                                                     user.phoneNumber
                                                                             ?.let {
                                                                                 user.status = 1
-//                                                                                user.password = bCryptPasswordEncoder.encode(user.password)
-                                                                                user.password = user.password
+                                                                                user.password = bCryptPasswordEncoder.encode(user.password)
                                                                                  savedUser = userRepository.save(user)
                                                                             }?: run {
                                                                                 ExceptionHandler.throwInvalidParameterException(InvalidParameterException::class.java.constructors[0], "phone number", "user")

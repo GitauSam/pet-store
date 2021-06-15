@@ -20,6 +20,6 @@ class Pet {
     var modifiedBy: String? = "admin"
     var deletedAt: Timestamp? = null
     var deletedBy: String? = null
-    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pet", fetch = FetchType.EAGER)
     lateinit var images: List<PetImageProperties>
 }

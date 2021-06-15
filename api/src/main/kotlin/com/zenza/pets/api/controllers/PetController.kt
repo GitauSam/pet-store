@@ -31,7 +31,7 @@ class PetController(
             @RequestParam("type") t: String,
             @RequestParam("age") a: Double,
             @RequestParam("colour") c: String,
-            @RequestParam("file") file: MultipartFile
+            @RequestParam("pet_img") file: MultipartFile
     ): ResponseEntity<ApiResponse> = try {
 //        val pet = createPet.save(
 //                    file,

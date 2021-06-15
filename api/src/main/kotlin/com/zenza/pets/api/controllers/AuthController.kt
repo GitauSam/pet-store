@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.logging.Level
+import java.util.logging.Logger
 
 @RequestMapping("/auth")
 @RestController
@@ -25,6 +27,8 @@ class AuthController(
         private val createUser: CreateUser
 ) {
 
+    private val TAG = "AuthController"
+
     @PostMapping("/login")
     fun login(@RequestBody user: User): ResponseEntity<ApiResponse> {
         try {
@@ -33,16 +37,19 @@ class AuthController(
 
             val authenticatedUser = userRepository.findByUsername(user.username!!)
 
+            val token = jwtTokenUtil.generateAccessToken(authenticatedUser!!)
+
+            Logger.getLogger(TAG).log(Level.WARNING, "token: $token")
+
             return ResponseEntity.ok()
                     .header(
                             HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateAccessToken(authenticatedUser!!),
-                            "token"
+                            token
                     )
                     .body(ApiResponse(
                             "200",
                             "login successful",
-                            null
+                            hashMapOf("access_token" to token)
                     ))
         } catch (e: BadCredentialsException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
@@ -54,14 +61,15 @@ class AuthController(
         try {
             val _user = createUser.save(user)
 
+            val token = jwtTokenUtil.generateAccessToken(_user!!)
+
+            Logger.getLogger(TAG).log(Level.WARNING, "token: $token")
+
             return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateAccessToken(_user!!)
-                    ).body(ApiResponse(
+                    .body(ApiResponse(
                             "200",
                             "registration successful",
-                            _user
+                            hashMapOf("access_token" to token)
                     ))
         } catch (e: Exception) {
             return ResponseEntity

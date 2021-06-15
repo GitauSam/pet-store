@@ -37,12 +37,12 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter,
                 .and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().exceptionHandling().authenticationEntryPoint { request: HttpServletRequest?, response: HttpServletResponse, ex: AuthenticationException ->
+                .and().exceptionHandling().authenticationEntryPoint { _: HttpServletRequest?, response: HttpServletResponse, ex: AuthenticationException ->
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.message)
                 }
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/**", "/petimg/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
 
