@@ -11,6 +11,7 @@ import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.Pet
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.logging.Level
@@ -25,6 +26,7 @@ class PetController(
         val fetchPet: FetchPet
 ) {
 
+    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/create")
     fun create(
@@ -33,14 +35,6 @@ class PetController(
             @RequestParam("colour") c: String,
             @RequestParam("pet_img") file: MultipartFile
     ): ResponseEntity<ApiResponse> = try {
-//        val pet = createPet.save(
-//                    file,
-//                    Pet().apply {
-//                        type = t
-//                        age = a
-//                        colour = c
-//                    }
-//        )
 
         val pet = createPet.save(
                 file,
@@ -91,6 +85,7 @@ class PetController(
                 )
     }
 
+    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @PostMapping("/edit")
     fun edit(@RequestBody pet: Pet): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
@@ -128,6 +123,7 @@ class PetController(
                 )
     }
 
+    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @PostMapping("/delete")
     fun delete(@RequestBody pet: Pet): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
@@ -165,6 +161,7 @@ class PetController(
                 )
     }
 
+    @PreAuthorize("hasAuthority('READ_PET_PRIVILEGE')")
     @GetMapping("/fetch")
     fun fetchById(@RequestParam("pet") petId: Long): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
@@ -202,6 +199,7 @@ class PetController(
                 )
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_PETS_PRIVILEGE')")
     @GetMapping("/fetch-all")
     fun fetchAll(
             @RequestParam("page", defaultValue = "0") page: Int,

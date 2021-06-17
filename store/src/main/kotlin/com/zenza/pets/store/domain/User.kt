@@ -2,6 +2,7 @@ package com.zenza.pets.store.domain
 
 import javax.persistence.*
 
+
 @Entity
 @Table(name = "users")
 class User {
@@ -15,4 +16,11 @@ class User {
     var phoneNumber: String? = null
     var password: String? = null
     var status = 0
+    @ManyToMany
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+    )
+    var roles: Collection<Role>? = null
 }

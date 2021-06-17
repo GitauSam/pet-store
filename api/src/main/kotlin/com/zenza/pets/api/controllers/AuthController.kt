@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,6 +30,7 @@ class AuthController(
 
     private val TAG = "AuthController"
 
+    @Transactional
     @PostMapping("/login")
     fun login(@RequestBody user: User): ResponseEntity<ApiResponse> {
         try {
@@ -49,7 +51,9 @@ class AuthController(
                     .body(ApiResponse(
                             "200",
                             "login successful",
-                            hashMapOf("access_token" to token)
+                            hashMapOf(
+                                "access_token" to token
+                            )
                     ))
         } catch (e: BadCredentialsException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
