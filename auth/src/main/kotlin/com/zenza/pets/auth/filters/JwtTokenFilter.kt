@@ -1,5 +1,6 @@
 package com.zenza.pets.auth.filters
 
+import com.zenza.pets.auth.userdetails.UserDetailsServiceImpl
 import com.zenza.pets.auth.utils.JwtTokenUtil
 import com.zenza.pets.store.repository.UserRepository
 import org.springframework.http.HttpHeaders
@@ -11,12 +12,18 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.util.logging.Level
+import java.util.logging.Logger
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class JwtTokenFilter(private val userRepository: UserRepository, private val jwtTokenUtil: JwtTokenUtil): OncePerRequestFilter() {
+class JwtTokenFilter(
+    private val userRepository: UserRepository,
+    private val jwtTokenUtil: JwtTokenUtil,
+    private val userDetailsServiceImpl: UserDetailsServiceImpl
+): OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
 
@@ -36,8 +43,11 @@ class JwtTokenFilter(private val userRepository: UserRepository, private val jwt
         }
 
         // get user identity and set it to spring security
+        jwtTokenUtil.getUsername(token)
+
         val user = userRepository.findByEmail(jwtTokenUtil.getUsername(token))!!
-        val userDetails = User(user.email, user.password, listOf<SimpleGrantedAuthority>())
+
+        val userDetails = userDetailsServiceImpl.loadUserByUsername(user.username)
 
         val authentication = UsernamePasswordAuthenticationToken(
                 userDetails, null,

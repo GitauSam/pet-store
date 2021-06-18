@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-    securedEnabled = true,
-    prePostEnabled = true,
-    jsr250Enabled = true
+//    securedEnabled = true,
+    prePostEnabled = true
+//    jsr250Enabled = true
 )
 class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter,
                      private val userDetailsServiceImpl: UserDetailsServiceImpl,
