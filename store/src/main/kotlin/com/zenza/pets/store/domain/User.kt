@@ -1,5 +1,7 @@
 package com.zenza.pets.store.domain
 
+import java.sql.Timestamp
+import java.time.Instant
 import javax.persistence.*
 
 
@@ -16,6 +18,12 @@ class User {
     var phoneNumber: String? = null
     var password: String? = null
     var status = 0
+    var createdAt: Timestamp? = null
+    var createdBy: String? = "admin"
+    var modifiedAt: Timestamp? = Timestamp.from(Instant.now())
+    var modifiedBy: String = "admin"
+    var deletedBy: String? = null
+    var deletedAt: Timestamp? = Timestamp.from(Instant.now())
     @ManyToMany
     @JoinTable(
         name = "users_roles",

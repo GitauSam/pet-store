@@ -22,4 +22,15 @@ class UserRepositoryTests {
 
     }
 
+    @Test
+    fun fetchAllUsersExceptCurrent() {
+        val users = userRepository.findAllUsersExceptCurrent("johndoe")
+
+        println(users.size)
+
+        for (u in users) {
+            println(u.email)
+        }
+    }
+
 }

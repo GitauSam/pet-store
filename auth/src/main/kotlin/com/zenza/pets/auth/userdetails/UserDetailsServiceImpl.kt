@@ -22,7 +22,7 @@ class UserDetailsServiceImpl(private val userRepository: UserRepository): UserDe
         val user = userRepository.findByUsername(username!!)
 
         user?.let {
-            return User(user.email, user.password, getAuthorities(user.roles!!))
+            return User(user.username, user.password, getAuthorities(user.roles!!))
         }?: run {
             throw UsernameNotFoundException("Invalid user. Did not find user with username {$username}")
         }
