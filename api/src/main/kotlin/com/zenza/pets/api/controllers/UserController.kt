@@ -6,10 +6,7 @@ import com.zenza.pets.store.repository.UserRepository
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.transaction.Transactional
@@ -22,11 +19,12 @@ class UserController(
         val indexUserButCurrent: IndexUserButCurrent
 ) {
 
-    @Transactional
     @PreAuthorize("hasAuthority('READ_ALL_USERS_PRIVILEGE')")
-    @CrossOrigin(origins = ["http://localhost:3000"])
     @GetMapping("/")
-    fun all(): ApiResponse = try {
+    fun all(
+        @RequestParam("page", defaultValue = "1") page: Int,
+        @RequestParam("size", defaultValue = "5") size: Int
+    ): ApiResponse = try {
             ApiResponse(
                     "200",
                     "All Users Fetched Successfully",
@@ -40,11 +38,12 @@ class UserController(
             )
         }
 
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    @PreAuthorize("hasAuthority('READ_ALL_USERS_PRIVILEGE')")
     @GetMapping("/all")
-    fun fetchAllButCurrent(): ApiResponse = try {
+    fun fetchAllButCurrent(
+        @RequestParam("page", defaultValue = "1") page: Int,
+        @RequestParam("size", defaultValue = "5") size: Int
+    ): ApiResponse = try {
         val principal = SecurityContextHolder
                             .getContext()
                             .authentication
@@ -63,7 +62,12 @@ class UserController(
         ApiResponse(
                 "200",
                 "Fetched users successfully",
-                indexUserButCurrent.fetchAllUsersButCurrent(username)
+                indexUserButCurrent
+                    .fetchAllUsersButCurrent(
+                        username,
+                        page,
+                        size
+                    )
         )
     } catch (e: Exception) {
         ApiResponse(

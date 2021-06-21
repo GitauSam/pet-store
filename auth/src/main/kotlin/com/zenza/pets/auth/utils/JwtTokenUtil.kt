@@ -19,7 +19,7 @@ class JwtTokenUtil {
 
     fun generateAccessToken(user: User): String {
         return Jwts.builder()
-                .setSubject("${user.id},${user.email}")
+                .setSubject("${user.id},${user.username}")
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(Date())
                 .setExpiration(Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))

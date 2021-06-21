@@ -18,12 +18,18 @@ class User {
     var phoneNumber: String? = null
     var password: String? = null
     var status = 0
+    @Column(name = "created_at")
     var createdAt: Timestamp? = null
+    @Column(name = "created_by")
     var createdBy: String? = "admin"
+    @Column(name = "modified_at")
     var modifiedAt: Timestamp? = Timestamp.from(Instant.now())
+    @Column(name = "modified_by")
     var modifiedBy: String = "admin"
+    @Column(name = "deleted_by")
     var deletedBy: String? = null
-    var deletedAt: Timestamp? = Timestamp.from(Instant.now())
+    @Column(name = "deleted_at")
+    var deletedAt: Timestamp? = null
     @ManyToMany
     @JoinTable(
         name = "users_roles",

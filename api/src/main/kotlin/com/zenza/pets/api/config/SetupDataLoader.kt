@@ -32,11 +32,13 @@ class SetupDataLoader(
         val readAllPetsPrivilege = _createPrivilegeIfNotFound("READ_ALL_PETS_PRIVILEGE")
         val readPetPrivilege = _createPrivilegeIfNotFound("READ_PET_PRIVILEGE")
         val writePetPrivilege = _createPrivilegeIfNotFound("WRITE_PET_PRIVILEGE")
+        val readAllUsersPrivilege = _createPrivilegeIfNotFound("READ_ALL_USERS_PRIVILEGE")
 
         val adminPrivileges = listOf(
             readPetPrivilege,
             readAllPetsPrivilege,
-            writePetPrivilege
+            writePetPrivilege,
+            readAllUsersPrivilege
         )
 
         val userPrivileges = listOf(
@@ -48,6 +50,7 @@ class SetupDataLoader(
         _createRoleIfNotFound("ROLE_USER", userPrivileges)
 
         val adminRole = roleRepository.findByName("ROLE_ADMIN")
+        val userRole = roleRepository.findByName("ROLE_USER")
 
         userRepository.findByUsername("johndoe")?.let {
 
@@ -60,6 +63,48 @@ class SetupDataLoader(
                 password = bCryptPasswordEncoder.encode("JohnDoe1234")
                 phoneNumber = "254700000000"
                 roles = listOf(adminRole!!)
+            })
+        }
+
+        userRepository.findByUsername("janedoe")?.let {
+
+        }?: run {
+            userRepository.save(User().apply {
+                firstName = "Jane"
+                lastName = "Doe"
+                email = "janedoe@pets.com"
+                username = "janedoe"
+                password = bCryptPasswordEncoder.encode("JaneDoe1234")
+                phoneNumber = "254700000001"
+                roles = listOf(userRole!!)
+            })
+        }
+
+        userRepository.findByUsername("jackdoe")?.let {
+
+        }?: run {
+            userRepository.save(User().apply {
+                firstName = "Jack"
+                lastName = "Doe"
+                email = "jackdoe@pets.com"
+                username = "jackdoe"
+                password = bCryptPasswordEncoder.encode("JackDoe1234")
+                phoneNumber = "254700000002"
+                roles = listOf(userRole!!)
+            })
+        }
+
+        userRepository.findByUsername("juliandoe")?.let {
+
+        }?: run {
+            userRepository.save(User().apply {
+                firstName = "Julian"
+                lastName = "Doe"
+                email = "juliandoe@pets.com"
+                username = "juliandoe"
+                password = bCryptPasswordEncoder.encode("JulianDoe1234")
+                phoneNumber = "254700000003"
+                roles = listOf(userRole!!)
             })
         }
     }
