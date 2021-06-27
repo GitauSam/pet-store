@@ -13,6 +13,6 @@ interface UserRepository: JpaRepository<User, Long?> {
     fun findByEmail(email: String): User?
     fun findByUsername(email: String): User?
 
-    @Query("SELECT * FROM users u", nativeQuery = true)
-    fun findAllUsersExceptCurrent(username: String, pageable: Pageable): List<User>
+    @Query("SELECT * FROM users u WHERE u.username != ?1", nativeQuery = true)
+    fun findAllUsersExceptCurrent(username: String, pageable: Pageable): Page<User>
 }

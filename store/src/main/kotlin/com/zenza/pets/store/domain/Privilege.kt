@@ -15,6 +15,6 @@ class Privilege {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
     var name: String? = null
-    @ManyToMany(mappedBy = "privileges")
-    var roles: Collection<Role>? = null
+//    @ManyToMany(mappedBy = "privileges")
+//    var roles: Collection<Role>? = null
 }

@@ -45,11 +45,9 @@ class JwtTokenFilter(
         // get user identity and set it to spring security
         val username = jwtTokenUtil.getUsername(token)
 
-        Logger.getLogger("JWT Filter Username").log(Level.WARNING, "Username: $username")
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Username: $username")
 
-        val user = userRepository.findByUsername(jwtTokenUtil.getUsername(token))!!
-
-        val userDetails = userDetailsServiceImpl.loadUserByUsername(user.username)
+        val userDetails = userDetailsServiceImpl.loadUserByUsername(username)
 
         val authentication = UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.authorities

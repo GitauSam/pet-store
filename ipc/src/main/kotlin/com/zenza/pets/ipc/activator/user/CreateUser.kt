@@ -7,6 +7,8 @@ import com.zenza.pets.store.domain.User
 import com.zenza.pets.store.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.sql.Timestamp
+import java.time.Instant
 
 @Service
 class CreateUser(
@@ -31,6 +33,7 @@ class CreateUser(
                                                                     user.phoneNumber
                                                                             ?.let {
                                                                                 user.status = 1
+                                                                                user.createdAt = Timestamp.from(Instant.now())
                                                                                 user.password = bCryptPasswordEncoder.encode(user.password)
                                                                                  savedUser = userRepository.save(user)
                                                                             }?: run {

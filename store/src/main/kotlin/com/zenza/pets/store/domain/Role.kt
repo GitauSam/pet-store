@@ -14,10 +14,10 @@ class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
     var name: String? = null
-    @ManyToMany(mappedBy = "roles")
-    var users: Collection<User>? = null
+//    @ManyToMany(mappedBy = "roles")
+//    var users: Collection<User>? = null
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "roles_privileges",
         joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],

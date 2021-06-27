@@ -1,6 +1,7 @@
 package com.zenza.pets.ipc.activator
 
 import com.ninjasquad.springmockk.MockkBean
+import com.zenza.pets.ipc.activator.pet.DeactivatePet
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.Pet
@@ -24,7 +25,7 @@ internal class DeactivatePetTest {
     @Test
     fun `should throw InvalidInputException when passed argument is null`() {
         Assertions.assertThatExceptionOfType(InvalidInputException::class.java)
-                .isThrownBy { deactivatePet.deactivate(null) }
+                .isThrownBy { deactivatePet.deactivate(16L) }
                 .withMessage("%s", "Expected input pet is null")
                 .withMessageContaining("Expected input pet is null")
                 .withNoCause()
@@ -41,7 +42,7 @@ internal class DeactivatePetTest {
         }
 
         Assertions.assertThatExceptionOfType(InvalidParameterException::class.java)
-                .isThrownBy { deactivatePet.deactivate(savedPet) }
+                .isThrownBy { deactivatePet.deactivate(16L) }
                 .withMessage("%s", "Expected param id of input pet is null")
                 .withMessageContaining("Expected param id of input pet is null")
                 .withNoCause()
@@ -61,7 +62,7 @@ internal class DeactivatePetTest {
 
         every { petRepository.save(savedPet) } returns savedPet
 
-        Assertions.assertThat(deactivatePet.deactivate(savedPet)).isEqualTo(savedPet)
+        Assertions.assertThat(deactivatePet.deactivate(savedPet.id!!)).isEqualTo(savedPet)
         verify { petRepository.save(savedPet) }
     }
 }

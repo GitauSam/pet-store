@@ -1,6 +1,7 @@
 package com.zenza.pets.ipc.activator
 
 import com.ninjasquad.springmockk.MockkBean
+import com.zenza.pets.ipc.activator.pet.FetchPet
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.Pet

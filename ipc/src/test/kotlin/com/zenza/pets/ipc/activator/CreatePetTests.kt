@@ -1,14 +1,11 @@
 package com.zenza.pets.ipc.activator
 
 import com.ninjasquad.springmockk.MockkBean
-import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
-import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
+import com.zenza.pets.ipc.activator.pet.CreatePet
 import com.zenza.pets.store.domain.Pet
 import com.zenza.pets.store.repository.PetRepository
 import io.mockk.every
 import io.mockk.verify
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired

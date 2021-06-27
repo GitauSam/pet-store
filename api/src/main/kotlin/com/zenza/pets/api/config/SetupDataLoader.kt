@@ -32,6 +32,7 @@ class SetupDataLoader(
         val readAllPetsPrivilege = _createPrivilegeIfNotFound("READ_ALL_PETS_PRIVILEGE")
         val readPetPrivilege = _createPrivilegeIfNotFound("READ_PET_PRIVILEGE")
         val writePetPrivilege = _createPrivilegeIfNotFound("WRITE_PET_PRIVILEGE")
+        val writeUserPrivilege = _createPrivilegeIfNotFound("WRITE_USER_PRIVILEGE")
         val readAllUsersPrivilege = _createPrivilegeIfNotFound("READ_ALL_USERS_PRIVILEGE")
 
         val adminPrivileges = listOf(

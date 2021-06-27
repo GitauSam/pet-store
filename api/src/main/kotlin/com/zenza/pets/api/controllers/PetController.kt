@@ -1,11 +1,7 @@
 package com.zenza.pets.api.controllers
 
 import com.zenza.pets.api.domain.ApiResponse
-import com.zenza.pets.api.domain.CreatePetRequest
-import com.zenza.pets.ipc.activator.CreatePet
-import com.zenza.pets.ipc.activator.DeactivatePet
-import com.zenza.pets.ipc.activator.EditPet
-import com.zenza.pets.ipc.activator.FetchPet
+import com.zenza.pets.ipc.activator.pet.*
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.Pet
@@ -23,6 +19,7 @@ class PetController(
         val createPet: CreatePet,
         val editPet: EditPet,
         val deactivatePet: DeactivatePet,
+        val activatePet: ActivatePet,
         val fetchPet: FetchPet
 ) {
 
@@ -123,44 +120,6 @@ class PetController(
                 )
     }
 
-    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
-    @PostMapping("/delete")
-    fun delete(@RequestBody pet: Pet): ResponseEntity<ApiResponse> = try {
-        ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse(
-                        "200",
-                        "pet saved successfully",
-                        deactivatePet.deactivate(pet)
-                ))
-    } catch (e: InvalidParameterException) {
-        ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ApiResponse(
-                                "25",
-                                e.message!!,
-                                null
-                        )
-                )
-    } catch (e: InvalidInputException) {
-        ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ApiResponse(
-                                "25",
-                                e.message!!,
-                                null
-                        )
-                )
-    } catch (e: Exception) {
-        ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        ApiResponse(
-                                "99",
-                                e.message!!,
-                                null
-                        )
-                )
-    }
-
     @PreAuthorize("hasAuthority('READ_PET_PRIVILEGE')")
     @GetMapping("/fetch")
     fun fetchById(@RequestParam("pet") petId: Long): ResponseEntity<ApiResponse> = try {
@@ -218,6 +177,54 @@ class PetController(
                                 "99",
                                 e.message!!,
                                 null
+                        )
+                )
+    }
+
+    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
+    @GetMapping("/delete/{id}")
+    fun deactivatePet(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+        ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                    ApiResponse(
+                            "200",
+                            "Successfully deleted pet",
+                            deactivatePet.deactivate(id)
+                    )
+                )
+    } catch (e: Exception) {
+        ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(
+                    ApiResponse(
+                            "99",
+                            "Error occurred while deleting pet",
+                            e.message
+                    )
+                )
+    }
+
+    @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
+    @GetMapping("/activate/{id}")
+    fun activatePet(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+        ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ApiResponse(
+                                "200",
+                                "Successfully activated pet",
+                                activatePet.activate(id)
+                        )
+                )
+    } catch (e: Exception) {
+        ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(
+                        ApiResponse(
+                                "99",
+                                "Error occurred while activating pet",
+                                e.message
                         )
                 )
     }

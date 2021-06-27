@@ -23,7 +23,7 @@ class IndexUserButCurrent(val userRepository: UserRepository) {
                 PageRequest.of(
                         page,
                         size,
-                        Sort.by("createdAt").descending()
+                        Sort.by("created_at").descending()
                     )
             )
     }

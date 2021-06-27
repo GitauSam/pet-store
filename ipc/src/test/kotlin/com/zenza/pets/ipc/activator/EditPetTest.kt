@@ -1,6 +1,7 @@
 package com.zenza.pets.ipc.activator
 
 import com.ninjasquad.springmockk.MockkBean
+import com.zenza.pets.ipc.activator.pet.EditPet
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.Pet
@@ -9,13 +10,11 @@ import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.io.IOException
 
 
 @ExtendWith(SpringExtension::class)

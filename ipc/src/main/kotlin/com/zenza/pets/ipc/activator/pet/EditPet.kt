@@ -1,4 +1,4 @@
-package com.zenza.pets.ipc.activator
+package com.zenza.pets.ipc.activator.pet
 
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
