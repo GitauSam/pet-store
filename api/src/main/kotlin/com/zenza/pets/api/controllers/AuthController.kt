@@ -50,6 +50,7 @@ class AuthController(
                             "200",
                             "login successful",
                             hashMapOf(
+                                "role" to authenticatedUser.roles!!.toList()[0].name,
                                 "access_token" to token
                             )
                     ))

@@ -4,15 +4,19 @@ import com.zenza.pets.ipc.utils.exceptions.ExceptionHandler
 import com.zenza.pets.ipc.utils.exceptions.InvalidInputException
 import com.zenza.pets.ipc.utils.exceptions.InvalidParameterException
 import com.zenza.pets.store.domain.User
+import com.zenza.pets.store.repository.RoleRepository
 import com.zenza.pets.store.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant
+import java.util.logging.Level
+import java.util.logging.Logger
 
 @Service
 class CreateUser(
        private val userRepository: UserRepository,
+       private val roleRepository: RoleRepository,
        private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
@@ -35,7 +39,21 @@ class CreateUser(
                                                                                 user.status = 1
                                                                                 user.createdAt = Timestamp.from(Instant.now())
                                                                                 user.password = bCryptPasswordEncoder.encode(user.password)
-                                                                                 savedUser = userRepository.save(user)
+
+                                                                                roleRepository.findByName("ROLE_USER")
+                                                                                    ?.let {
+                                                                                        user.roles = listOf(it)
+                                                                                    } ?: run {
+                                                                                        Logger
+                                                                                            .getLogger(this.javaClass.name)
+                                                                                            .log(
+                                                                                                Level.SEVERE,
+                                                                                                "USER ROLE does not exist in our store"
+                                                                                            )
+                                                                                    }
+
+                                                                                savedUser = userRepository.save(user)
+
                                                                             }?: run {
                                                                                 ExceptionHandler.throwInvalidParameterException(InvalidParameterException::class.java.constructors[0], "phone number", "user")
                                                                             }
