@@ -13,6 +13,8 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.sql.Timestamp
+import java.time.Instant
 
 @Component
 class SetupDataLoader(
@@ -34,17 +36,21 @@ class SetupDataLoader(
         val writePetPrivilege = _createPrivilegeIfNotFound("WRITE_PET_PRIVILEGE")
         val writeUserPrivilege = _createPrivilegeIfNotFound("WRITE_USER_PRIVILEGE")
         val readAllUsersPrivilege = _createPrivilegeIfNotFound("READ_ALL_USERS_PRIVILEGE")
+        val adoptPetPrivilege = _createPrivilegeIfNotFound("ADOPT_PET_PRIVILEGE")
 
         val adminPrivileges = listOf(
             readPetPrivilege,
             readAllPetsPrivilege,
             writePetPrivilege,
-            readAllUsersPrivilege
+            writeUserPrivilege,
+            readAllUsersPrivilege,
+            adoptPetPrivilege
         )
 
         val userPrivileges = listOf(
             readPetPrivilege,
-            readAllPetsPrivilege
+            readAllPetsPrivilege,
+            adoptPetPrivilege
         )
 
         _createRoleIfNotFound("ROLE_ADMIN", adminPrivileges)
@@ -64,6 +70,7 @@ class SetupDataLoader(
                 password = bCryptPasswordEncoder.encode("JohnDoe1234")
                 phoneNumber = "254700000000"
                 roles = listOf(adminRole!!)
+                createdAt = Timestamp.from(Instant.now())
             })
         }
 
@@ -78,6 +85,7 @@ class SetupDataLoader(
                 password = bCryptPasswordEncoder.encode("JaneDoe1234")
                 phoneNumber = "254700000001"
                 roles = listOf(userRole!!)
+                createdAt = Timestamp.from(Instant.now())
             })
         }
 
@@ -92,6 +100,7 @@ class SetupDataLoader(
                 password = bCryptPasswordEncoder.encode("JackDoe1234")
                 phoneNumber = "254700000002"
                 roles = listOf(userRole!!)
+                createdAt = Timestamp.from(Instant.now())
             })
         }
 
@@ -106,6 +115,7 @@ class SetupDataLoader(
                 password = bCryptPasswordEncoder.encode("JulianDoe1234")
                 phoneNumber = "254700000003"
                 roles = listOf(userRole!!)
+                createdAt = Timestamp.from(Instant.now())
             })
         }
     }

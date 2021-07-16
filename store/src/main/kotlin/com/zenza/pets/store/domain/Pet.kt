@@ -22,4 +22,6 @@ class Pet {
     var deletedBy: String? = null
     @OneToMany(mappedBy = "pet", fetch = FetchType.EAGER)
     lateinit var images: List<PetImageProperties>
+//    @OneToMany
+//    lateinit var user: Collection<PetAdoption>
 }

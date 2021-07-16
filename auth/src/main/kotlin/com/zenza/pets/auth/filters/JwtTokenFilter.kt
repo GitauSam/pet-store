@@ -29,6 +29,8 @@ class JwtTokenFilter(
 
         val header = request.getHeader(HttpHeaders.AUTHORIZATION)
 
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Authorization header: $header")
+
         if (header == null || header == "" || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response)
             return

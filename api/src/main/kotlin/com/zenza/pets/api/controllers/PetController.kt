@@ -20,7 +20,8 @@ class PetController(
         val editPet: EditPet,
         val deactivatePet: DeactivatePet,
         val activatePet: ActivatePet,
-        val fetchPet: FetchPet
+        val fetchPet: FetchPet,
+        val adoptPet: AdoptPet
 ) {
 
     @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
@@ -227,6 +228,30 @@ class PetController(
                                 e.message
                         )
                 )
+    }
+
+    @PreAuthorize("hasAuthority('ADOPT_PET_PRIVILEGE')")
+    @GetMapping("/adoption-request/{id}")
+    fun requestAdoption(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+        ResponseEntity
+            .status(HttpStatus.OK)
+            .body(
+                ApiResponse(
+                    "200",
+                    "Successfully requested to adopt pet. You will receive a response soon.",
+                    adoptPet.requestAdoption(id)
+                )
+            )
+    } catch (e: Exception) {
+        ResponseEntity
+            .status(HttpStatus.EXPECTATION_FAILED)
+            .body(
+                ApiResponse(
+                    "99",
+                    "Error occurred while requesting to adopt pet",
+                    e.message
+                )
+            )
     }
 
 }
