@@ -233,6 +233,7 @@ class PetController(
     @PreAuthorize("hasAuthority('ADOPT_PET_PRIVILEGE')")
     @GetMapping("/adoption-request/{id}")
     fun requestAdoption(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Received adoption request")
         ResponseEntity
             .status(HttpStatus.OK)
             .body(
@@ -243,6 +244,8 @@ class PetController(
                 )
             )
     } catch (e: Exception) {
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Received adoption request and exception has occurred")
+        e.printStackTrace()
         ResponseEntity
             .status(HttpStatus.EXPECTATION_FAILED)
             .body(

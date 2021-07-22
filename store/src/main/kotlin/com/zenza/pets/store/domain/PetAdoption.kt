@@ -27,8 +27,8 @@ class PetAdoption {
     var modifiedAt: Timestamp? = Timestamp.from(Instant.now())
     @Column(name = "modified_by", nullable = false)
     var modifiedBy: String? = null
-    @Column(name = "deleted_at", nullable = false)
+    @Column(name = "deleted_at", nullable = true)
     var deletedAt: Timestamp? = null
-    @Column(name = "deleted_by", nullable = false)
+    @Column(name = "deleted_by", nullable = true)
     var deletedBy: Timestamp? = null
 }
