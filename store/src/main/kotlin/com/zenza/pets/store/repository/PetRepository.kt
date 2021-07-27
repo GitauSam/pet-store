@@ -11,4 +11,6 @@ import java.util.*
 interface PetRepository: JpaRepository<Pet, Long> {
     override fun findAll(pageable: Pageable): Page<Pet>
     fun findPetById(id: Long): Pet?
+    fun findPetsByType(type: String, pageable: Pageable): Page<Pet>
+    fun findPetsByTypeContainingOrColourContaining(type: String, colour: String, pageable: Pageable): Page<Pet>
 }

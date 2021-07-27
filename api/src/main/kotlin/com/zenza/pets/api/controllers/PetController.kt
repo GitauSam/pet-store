@@ -21,9 +21,11 @@ class PetController(
         val deactivatePet: DeactivatePet,
         val activatePet: ActivatePet,
         val fetchPet: FetchPet,
-        val adoptPet: AdoptPet
+        val adoptPet: AdoptPet,
+        val searchPet: SearchPet
 ) {
 
+    @ExperimentalStdlibApi
     @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/create")
@@ -37,9 +39,9 @@ class PetController(
         val pet = createPet.save(
                 file,
                 Pet().apply {
-                    type = t
+                    type = t.lowercase()
                     age = a
-                    colour = c
+                    colour = c.lowercase()
                 }
         )
 
@@ -85,7 +87,9 @@ class PetController(
 
     @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @PostMapping("/edit")
-    fun edit(@RequestBody pet: Pet): ResponseEntity<ApiResponse> = try {
+    fun edit(
+        @RequestBody pet: Pet
+    ): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse(
                         "200",
@@ -123,7 +127,9 @@ class PetController(
 
     @PreAuthorize("hasAuthority('READ_PET_PRIVILEGE')")
     @GetMapping("/fetch")
-    fun fetchById(@RequestParam("pet") petId: Long): ResponseEntity<ApiResponse> = try {
+    fun fetchById(
+        @RequestParam("pet") petId: Long
+    ): ResponseEntity<ApiResponse> = try {
         ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse(
                         "200",
@@ -184,7 +190,9 @@ class PetController(
 
     @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @GetMapping("/delete/{id}")
-    fun deactivatePet(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+    fun deactivatePet(
+        @PathVariable("id") id: Long
+    ): ResponseEntity<ApiResponse> = try {
         ResponseEntity
                 .status(HttpStatus.OK)
                 .body(
@@ -208,7 +216,9 @@ class PetController(
 
     @PreAuthorize("hasAuthority('WRITE_PET_PRIVILEGE')")
     @GetMapping("/activate/{id}")
-    fun activatePet(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+    fun activatePet(
+        @PathVariable("id") id: Long
+    ): ResponseEntity<ApiResponse> = try {
         ResponseEntity
                 .status(HttpStatus.OK)
                 .body(
@@ -232,7 +242,9 @@ class PetController(
 
     @PreAuthorize("hasAuthority('ADOPT_PET_PRIVILEGE')")
     @GetMapping("/adoption-request/{id}")
-    fun requestAdoption(@PathVariable("id") id: Long): ResponseEntity<ApiResponse> = try {
+    fun requestAdoption(
+        @PathVariable("id") id: Long
+    ): ResponseEntity<ApiResponse> = try {
         Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Received adoption request")
         ResponseEntity
             .status(HttpStatus.OK)
@@ -257,4 +269,34 @@ class PetController(
             )
     }
 
+    @ExperimentalStdlibApi
+    @PreAuthorize("hasAuthority('READ_ALL_PETS_PRIVILEGE')")
+    @GetMapping("/search")
+    fun searchPets(
+        @RequestParam("filter") param: String,
+        @RequestParam("page", defaultValue = "0") page: Int,
+        @RequestParam("size", defaultValue = "5") size: Int
+    ): ResponseEntity<ApiResponse> = try {
+        ResponseEntity
+            .ok()
+            .body(
+                ApiResponse(
+                    "200",
+                    "Successfully filtered pets using filter: ${param}",
+                    searchPet.search(param.lowercase(), page, size)
+                )
+            )
+    } catch (e: Exception) {
+        Logger.getLogger(this.javaClass.name).log(Level.WARNING, "Received search pet request and exception has occurred")
+        e.printStackTrace()
+        ResponseEntity
+            .status(HttpStatus.EXPECTATION_FAILED)
+            .body(
+                ApiResponse(
+                    "99",
+                    "Error occurred while filtering pets using filter: ${param}",
+                    e.message
+                )
+            )
+    }
 }
